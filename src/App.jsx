@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/requests');
+        const response = await axios.get('https://backendsistemaeinsteinv2.onrender.com');
         setRequests(response.data);
       } catch (error) {
         console.error('Erro ao buscar requisições:', error);
