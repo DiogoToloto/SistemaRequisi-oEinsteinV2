@@ -86,7 +86,7 @@ const AlmoxarifadoPage = () => {
   // Função para buscar as requisições
   const fetchRequests = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/requests");
+      const response = await axios.get('https://backendsistemaeinsteinv2.onrender.com/requests');
       setRequests(response.data);
 
       // Contagem de requisições pendentes e finalizadas
@@ -112,7 +112,7 @@ const AlmoxarifadoPage = () => {
 
   const handleFinalize = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/requests/${id}`, {
+      await axios.patch(`https://backendsistemaeinsteinv2.onrender.com/requests/${id}`, {
         status: "finalizado",
       });
       fetchRequests(); // Atualiza a lista de requisições após finalizar
@@ -123,7 +123,7 @@ const AlmoxarifadoPage = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/requests/${deleteRequestId}`);
+      await axios.delete(`https://backendsistemaeinsteinv2.onrender.com/requests/${deleteRequestId}`);
       fetchRequests(); // Atualiza a lista de requisições após deletar
       setShowModal(false); // Fecha o modal após excluir
     } catch (error) {

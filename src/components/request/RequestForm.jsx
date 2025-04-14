@@ -27,7 +27,7 @@ function RequestForm({ onRequestCreated }) {
     };
 
     try {
-      await axios.post('http://localhost:5000/requests', newRequest);
+      await axios.post('https://backendsistemaeinsteinv2.onrender.com/requests', newRequest);
       onRequestCreated(newRequest);
       setFormData({ nome: '', drt: '', plantao: '', setor: '', materiais: '' });
 
