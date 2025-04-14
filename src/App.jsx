@@ -11,18 +11,18 @@ function App() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('https://backendsistemaeinsteinv2.onrender.com');
+        const response = await axios.get('https://backendsistemaeinsteinv2.onrender.com/requests');
         setRequests(response.data);
       } catch (error) {
         console.error('Erro ao buscar requisições:', error);
       }
     };
-
+  
     fetchRequests();
     const interval = setInterval(fetchRequests, 5000); // Atualiza a cada 5s
     return () => clearInterval(interval);
   }, []);
-
+  
   const hasPendentes = requests.some(req => req.status === 'pendente');
 
   return (
