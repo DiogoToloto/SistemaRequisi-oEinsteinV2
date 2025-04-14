@@ -35,7 +35,7 @@ const Card = styled.div`
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  min-width: 300px;
   padding-bottom: 20px;
   transition: transform 0.3s ease-in-out;
 
@@ -74,6 +74,25 @@ const ButtonFinalizar = styled.button`
   bottom: 10px;
   left: 10px;
 `;
+
+const CardScrollContainer = styled.div`
+  display: flex;
+  flex-wrap: nowrap; /* Impede quebra de linha */
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 10px;
+
+  /* Estilizando a barra de rolagem (opcional) */
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+  }
+`;
+
 
 const AlmoxarifadoPage = () => {
   const [requests, setRequests] = useState([]);
@@ -187,7 +206,7 @@ const AlmoxarifadoPage = () => {
           {index > 0 && <hr className="my-5 border-top border-dark" />}{" "}
           {/* divisória entre setores */}
           <h3 className="mb-3">Setor: {setor}</h3>
-          <div className="d-flex flex-wrap gap-3">
+          <CardScrollContainer>
             {groupedBySetor[setor].map((request) => (
               <Card
                 key={request.id}
@@ -231,7 +250,7 @@ const AlmoxarifadoPage = () => {
                 </CardBody>
               </Card>
             ))}
-          </div>
+          </CardScrollContainer>
         </div>
       ))}
 
