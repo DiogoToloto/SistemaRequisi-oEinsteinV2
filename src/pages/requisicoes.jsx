@@ -9,9 +9,10 @@ function Requisicoes() {
   };
 
   return (
-    <>
+    <div style={{marginTop: "100px"}}>
+    
       <RequestForm onRequestCreated={handleNovaRequisicao} />
-    </>
+    </div>
   );
 }
 

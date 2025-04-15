@@ -80,9 +80,10 @@ function RequestForm({ onRequestCreated }) {
               required
             >
               <option value="">Selecione</option>
-              <option value="Manhã">Manhã</option>
-              <option value="Tarde">Tarde</option>
-              <option value="Noite">Noite</option>
+              <option value="Diurno A">Diurno A</option>
+              <option value="Diurno B">Diurno B</option>
+              <option value="Noturno A">Noturno A</option>
+              <option value="Noturno B">Noturno B</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -97,7 +98,7 @@ function RequestForm({ onRequestCreated }) {
               <option value="">Selecione</option>
               <option value="Arsenal 5">Arsenal 5</option>
               <option value="Preparo 5">Preparo 5</option>
-              <option value="Expugo 5">Expugo 5</option>
+              <option value="Expugo 5">Expurgo 5</option>
               <option value="Arsenal i4">Arsenal i4</option>
               <option value="Preparo i4">Preparo i4</option>
               <option value="Expurgo i4">Expurgo i4</option>

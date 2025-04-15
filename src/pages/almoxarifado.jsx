@@ -12,7 +12,7 @@ const CounterContainer = styled.div`
   right: 20px;
   display: flex;
   gap: 15px;
-  z-index: 10;
+  z-index: 1;
 
   @media (max-width: 1200px) {
     display: none;
@@ -37,11 +37,6 @@ const Card = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 300px;
   padding-bottom: 20px;
-  transition: transform 0.3s ease-in-out;
-
-  &:hover {
-    transform: translateY(-10px);
-  }
 `;
 
 const CardBody = styled.div`
@@ -93,7 +88,6 @@ const CardScrollContainer = styled.div`
   }
 `;
 
-
 const AlmoxarifadoPage = () => {
   const [requests, setRequests] = useState([]);
   const [total, setTotal] = useState(0);
@@ -105,7 +99,9 @@ const AlmoxarifadoPage = () => {
   // Função para buscar as requisições
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('https://backendsistemaeinsteinv2.onrender.com/requests');
+      const response = await axios.get(
+        "https://backendsistemaeinsteinv2.onrender.com/requests"
+      );
       setRequests(response.data);
 
       // Contagem de requisições pendentes e finalizadas
@@ -131,9 +127,12 @@ const AlmoxarifadoPage = () => {
 
   const handleFinalize = async (id) => {
     try {
-      await axios.patch(`https://backendsistemaeinsteinv2.onrender.com/requests/${id}`, {
-        status: "finalizado",
-      });
+      await axios.patch(
+        `https://backendsistemaeinsteinv2.onrender.com/requests/${id}`,
+        {
+          status: "finalizado",
+        }
+      );
       fetchRequests(); // Atualiza a lista de requisições após finalizar
     } catch (error) {
       console.error("Erro ao finalizar requisição:", error);
@@ -142,7 +141,9 @@ const AlmoxarifadoPage = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`https://backendsistemaeinsteinv2.onrender.com/requests/${deleteRequestId}`);
+      await axios.delete(
+        `https://backendsistemaeinsteinv2.onrender.com/requests/${deleteRequestId}`
+      );
       fetchRequests(); // Atualiza a lista de requisições após deletar
       setShowModal(false); // Fecha o modal após excluir
     } catch (error) {
@@ -155,18 +156,20 @@ const AlmoxarifadoPage = () => {
     setShowModal(true);
   };
 
-  // Agrupar requisições por setor
-  const groupedBySetor = requests.reduce((groups, request) => {
-    const setor = request.setor;
-    if (!groups[setor]) {
-      groups[setor] = [];
-    }
-    groups[setor].push(request);
-    return groups;
-  }, {});
+  // Requisições separadas manualmente por agrupamentos fixos
+  const centroCirurgico5 = requests.filter((req) =>
+    ["arsenal 5", "preparo 5", "expurgo 5"].includes(req.setor.toLowerCase())
+  );
+
+  const centroCirurgicoI4 = requests.filter((req) =>
+    ["arsenal i4", "preparo i4", "expurgo i4"].includes(req.setor.toLowerCase())
+  );
 
   return (
-    <div className="container mt-4" style={{ position: "relative" }}>
+    <div
+      className="container"
+      style={{ position: "relative", marginTop: "100px" }}
+    >
       <h1>Página Almoxarifado</h1>
 
       {/* Contadores - Canto Superior Direito */}
@@ -201,58 +204,123 @@ const AlmoxarifadoPage = () => {
       <hr className="my-5 border-top border-dark" />
 
       {/* Requisições por Setor */}
-      {Object.keys(groupedBySetor).map((setor, index) => (
-        <div key={setor} className="my-4">
-          {index > 0 && <hr className="my-5 border-top border-dark" />}{" "}
-          {/* divisória entre setores */}
-          <h3 className="mb-3">Setor: {setor}</h3>
-          <CardScrollContainer>
-            {groupedBySetor[setor].map((request) => (
-              <Card
-                key={request.id}
-                className="card shadow-sm"
-                style={{ width: "18rem" }}
-              >
-                <div className="card-header">
-                  <h5>{request.nome}</h5>
-                  <p>{request.drt}</p>
-                  <p className="text-muted mb-1" style={{ fontSize: "0.9rem" }}>
-                    Criado em:{" "}
-                    {new Date(request.createdAt).toLocaleString("pt-BR")}
-                  </p>
-                </div>
-                <CardBody className="card-body">
+      {/* Centro Cirúrgico 5 */}
+      <div className="my-4">
+        <h3 className="mb-3">Setor: Centro Cirúrgico 5</h3>
+        <CardScrollContainer>
+          {centroCirurgico5.map((request) => (
+            <Card
+              key={request.id}
+              className="card shadow-sm"
+              style={{ width: "18rem" }}
+            >
+              <div className="card-header">
+                <h5>{request.nome}</h5>
+                <p>{request.drt}</p>
+                <p className="text-muted mb-1" style={{ fontSize: "0.9rem" }}>
+                  Criado em:{" "}
+                  {new Date(request.createdAt).toLocaleString("pt-BR")}
+                </p>
+                <span
+                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                >
+                  {request.setor}
+                </span>
+              </div>
+              <CardBody className="card-body">
+                <p>
+                  <strong>Plantão:</strong> {request.plantao}
+                </p>
+                <p>
+                  <strong>Status:</strong> {request.status}
+                </p>
+                <div>
                   <p>
-                    <strong>Status:</strong> {request.status}
+                    <strong>Materiais:</strong>
                   </p>
-                  <div className="">
-                    <p>
-                      <strong>Materiais:</strong>
-                    </p>
-                    <CardText>{request.materiais}</CardText>
-                  </div>
-                  <div className="d-flex justify-content-between mt-3">
-                    {request.status === "pendente" && (
-                      <ButtonFinalizar
-                        onClick={() => handleFinalize(request.id)}
-                        className="btn btn-success"
-                      >
-                        <FaCheckCircle /> Finalizar
-                      </ButtonFinalizar>
-                    )}
-                    <ButtonDelete
-                      onClick={() => showDeleteModal(request.id)}
-                      className="btn btn-danger"
+                  <CardText>{request.materiais}</CardText>
+                </div>
+                <div className="d-flex justify-content-between mt-3">
+                  {request.status === "pendente" && (
+                    <ButtonFinalizar
+                      onClick={() => handleFinalize(request.id)}
+                      className="btn btn-success"
                     >
-                      <FaTrashAlt /> Deletar
-                    </ButtonDelete>
-                  </div>
-                </CardBody>
-              </Card>
-            ))}
-          </CardScrollContainer>
-        </div>
-      ))}
+                      <FaCheckCircle /> Finalizar
+                    </ButtonFinalizar>
+                  )}
+                  <ButtonDelete
+                    onClick={() => showDeleteModal(request.id)}
+                    className="btn btn-danger"
+                  >
+                    <FaTrashAlt /> Deletar
+                  </ButtonDelete>
+                </div>
+              </CardBody>
+            </Card>
+          ))}
+        </CardScrollContainer>
+      </div>
+
+      <hr className="my-5 border-top border-dark" />
+
+      {/* Centro Cirúrgico I4 */}
+      <div className="my-4">
+        <h3 className="mb-3">Setor: Centro Cirúrgico I4</h3>
+        <CardScrollContainer>
+          {centroCirurgicoI4.map((request) => (
+            <Card
+              key={request.id}
+              className="card shadow-sm"
+              style={{ width: "18rem" }}
+            >
+              <div className="card-header">
+                <h5>{request.nome}</h5>
+                <p>{request.drt}</p>
+                <p className="text-muted mb-1" style={{ fontSize: "0.9rem" }}>
+                  Criado em:{" "}
+                  {new Date(request.createdAt).toLocaleString("pt-BR")}
+                </p>
+                <span
+                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                >
+                  {request.setor}
+                </span>
+              </div>
+              <CardBody className="card-body">
+                <p>
+                  <strong>Plantão:</strong> {request.plantao}
+                </p>
+                <p>
+                  <strong>Status:</strong> {request.status}
+                </p>
+                <div>
+                  <p>
+                    <strong>Materiais:</strong>
+                  </p>
+                  <CardText>{request.materiais}</CardText>
+                </div>
+                <div className="d-flex justify-content-between mt-3">
+                  {request.status === "pendente" && (
+                    <ButtonFinalizar
+                      onClick={() => handleFinalize(request.id)}
+                      className="btn btn-success"
+                    >
+                      <FaCheckCircle /> Finalizar
+                    </ButtonFinalizar>
+                  )}
+                  <ButtonDelete
+                    onClick={() => showDeleteModal(request.id)}
+                    className="btn btn-danger"
+                  >
+                    <FaTrashAlt /> Deletar
+                  </ButtonDelete>
+                </div>
+              </CardBody>
+            </Card>
+          ))}
+        </CardScrollContainer>
+      </div>
 
       {/* Modal para confirmar a exclusão */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>

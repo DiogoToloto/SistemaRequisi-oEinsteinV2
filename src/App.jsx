@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Requisicoes from './pages/requisicoes';
 import Almoxarifado from './pages/almoxarifado';
 import axios from 'axios';
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <Router>
-      <nav className="custom-navbar navbar navbar-expand-lg">
+      <nav className="custom-navbar navbar navbar-expand-lg position-fixed w-100 top-0 z-2">
         <div className="container-fluid px-4 d-flex justify-content-between align-items-center">
           <Link className="navbar-brand fw-bold text-white" to="/">
             🏥 Requisições Einstein
@@ -51,7 +51,7 @@ function App() {
         </div>
       </nav>
 
-      <div className="container mt-4">
+      <div className="container ">
         <Routes>
           <Route path="/" element={<Requisicoes />} />
           <Route path="/almoxarifado" element={<Almoxarifado />} />
