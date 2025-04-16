@@ -98,7 +98,7 @@ function RequestForm({ onRequestCreated }) {
               <option value="">Selecione</option>
               <option value="Arsenal 5">Arsenal 5</option>
               <option value="Preparo 5">Preparo 5</option>
-              <option value="Expugo 5">Expurgo 5</option>
+              <option value="Expurgo 5">Expurgo 5</option>
               <option value="Arsenal i4">Arsenal i4</option>
               <option value="Preparo i4">Preparo i4</option>
               <option value="Expurgo i4">Expurgo i4</option>
